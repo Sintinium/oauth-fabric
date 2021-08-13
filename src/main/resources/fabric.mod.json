@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "oauth-fabric",
+  "version": "${version}",
+  "name": "Oauth",
+  "description": "Adds the ability to relogin without closing your game. It includes legacy username logins, mojang logins, and microsoft account logins.",
+  "authors": [
+    "Sintinium"
+  ],
+  "contact": {},
+  "license": "GPL-3.0",
+  "icon": "assets/oauth-fabric/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.sintinium.oauth.oauthfabric.OauthFabric"
+    ]
+  },
+  "mixins": [
+    "oauth-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "minecraft": "1.17.1"
+  }
+}
