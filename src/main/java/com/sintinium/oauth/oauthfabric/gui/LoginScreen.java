@@ -6,14 +6,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.OrderedText;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class LoginScreen extends OAuthScreen {
@@ -55,10 +53,10 @@ public class LoginScreen extends OAuthScreen {
         }
         this.usernameWidget.setChangedListener(this::onEdited);
 
-        this.addDrawableChild(this.usernameWidget);
-        this.addDrawableChild(this.passwordWidget);
+        this.addButton(this.usernameWidget);
+        this.addButton(this.passwordWidget);
 
-        this.mojangLoginButton = this.addDrawableChild(new ResponsiveButton(this.width / 2 - 100, this.height / 2 + 36, 200, 20, new LiteralText("Login"), (p_213030_1_) -> {
+        this.mojangLoginButton = this.addButton(new ResponsiveButton(this.width / 2 - 100, this.height / 2 + 36, 200, 20, new LiteralText("Login"), (p_213030_1_) -> {
             Thread thread = new Thread(() -> {
                 if (usernameWidget.getText().isEmpty()) {
                     toRun.add(() -> this.status.set("Missing username!"));
@@ -70,15 +68,15 @@ public class LoginScreen extends OAuthScreen {
                         toRun.add(() -> this.status.set("Wrong password or username!"));
                     } else {
                         LoginUtil.updateOnlineStatus();
-                        toRun.add(() -> MinecraftClient.getInstance().setScreen(multiplayerScreen));
+                        toRun.add(() -> MinecraftClient.getInstance().openScreen(multiplayerScreen));
                     }
                 }
             });
             thread.start();
         }, this::updateLoginButton, () -> this.mojangLoginButton.setMessage(new LiteralText("Login"))));
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
-            MinecraftClient.getInstance().setScreen(lastScreen);
+        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
+            MinecraftClient.getInstance().openScreen(lastScreen);
         }));
         this.cleanUp();
     }
@@ -110,7 +108,7 @@ public class LoginScreen extends OAuthScreen {
 
     public void onClose() {
         this.cleanUp();
-        this.client.setScreen(this.lastScreen);
+        this.client.openScreen(this.lastScreen);
     }
 
     private void cleanUp() {
@@ -119,14 +117,28 @@ public class LoginScreen extends OAuthScreen {
 
     public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         this.renderBackground(p_230430_1_);
-        drawCenteredTextWithShadow(p_230430_1_, this.textRenderer, this.title.asOrderedText(), this.width / 2, 17, 16777215);
+        drawCenteredText(p_230430_1_, this.textRenderer, this.title, this.width / 2, 17, 16777215);
         drawStringWithShadow(p_230430_1_, this.textRenderer, "Username/Email", this.width / 2 - 100, this.height / 2 - 60 - 12, 10526880);
         drawStringWithShadow(p_230430_1_, this.textRenderer, "Password", this.width / 2 - 100, this.height / 2 - 20 - 12, 10526880);
         if (status.get() != null) {
-            drawCenteredTextWithShadow(p_230430_1_, this.textRenderer, new LiteralText(status.get()).asOrderedText(), this.width / 2, this.height / 2 + 10, 0xFF0000);
+            drawCenteredText(p_230430_1_, this.textRenderer, new LiteralText(status.get()), this.width / 2, this.height / 2 + 10, 0xFF0000);
         }
-        this.usernameWidget.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+
+        // Super render
+        for(int i = 0; i < this.buttons.size(); ++i) {
+            if (this.buttons.get(i) == this.passwordWidget) {
+                continue;
+            }
+            ((ClickableWidget)this.buttons.get(i)).render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+        }
+
+        String pw = this.passwordWidget.getText();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < pw.length(); i++) {
+            builder.append("*");
+        }
+        this.passwordWidget.setText(builder.toString());
         this.passwordWidget.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-        super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+        this.passwordWidget.setText(pw);
     }
 }

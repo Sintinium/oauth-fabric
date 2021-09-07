@@ -21,34 +21,34 @@ public class LoginTypeScreen extends OAuthScreen {
 
     @Override
     protected void init() {
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 - 20 - 2, 200, 20, new LiteralText("Mojang Login"), button -> {
-            MinecraftClient.getInstance().setScreen(new LoginScreen(this, lastScreen));
+        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 - 20 - 2, 200, 20, new LiteralText("Mojang Login"), button -> {
+            MinecraftClient.getInstance().openScreen(new LoginScreen(this, lastScreen));
         }));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 2, 200, 20, new LiteralText("Microsoft Login"), (p_213031_1_) -> {
+        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 2, 200, 20, new LiteralText("Microsoft Login"), (p_213031_1_) -> {
             final MicrosoftLogin login = new MicrosoftLogin();
             if (login.getErrorMsg() != null) {
                 System.err.println(login.getErrorMsg());
             }
             LoginLoadingScreen loginLoadingScreen = new LoginLoadingScreen(lastScreen, this, login::cancelLogin, true);
-            MinecraftClient.getInstance().setScreen(loginLoadingScreen);
+            MinecraftClient.getInstance().openScreen(loginLoadingScreen);
             Thread thread = new Thread(() -> {
                 login.login(() -> {
                     LoginUtil.updateOnlineStatus();
-                    loginLoadingScreen.addToQueue(() -> MinecraftClient.getInstance().setScreen(lastScreen));
+                    loginLoadingScreen.addToQueue(() -> MinecraftClient.getInstance().openScreen(lastScreen));
                 });
             });
             thread.start();
         }));
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (button) -> {
-            MinecraftClient.getInstance().setScreen(lastScreen);
+        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (button) -> {
+            MinecraftClient.getInstance().openScreen(lastScreen);
         }));
     }
 
     @Override
     public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         this.renderBackground(p_230430_1_);
-        drawCenteredTextWithShadow(p_230430_1_, this.textRenderer, this.title.asOrderedText(), this.width / 2, this.height / 2 - 60, 16777215);
+        drawCenteredText(p_230430_1_, this.textRenderer, this.title, this.width / 2, this.height / 2 - 60, 16777215);
         super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
     }
 }

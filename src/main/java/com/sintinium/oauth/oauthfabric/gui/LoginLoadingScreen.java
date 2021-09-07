@@ -29,9 +29,9 @@ public class LoginLoadingScreen extends OAuthScreen {
 
     @Override
     protected void init() {
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
+        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
             onCancel.run();
-            MinecraftClient.getInstance().setScreen(lastScreen);
+            MinecraftClient.getInstance().openScreen(lastScreen);
         }));
     }
 
@@ -55,9 +55,9 @@ public class LoginLoadingScreen extends OAuthScreen {
     @Override
     public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         this.renderBackground(p_230430_1_);
-        drawCenteredTextWithShadow(p_230430_1_, this.textRenderer, new LiteralText(renderText).asOrderedText(), this.width / 2, this.height / 2 - 40, 0xFFFFFF);
+        drawCenteredText(p_230430_1_, this.textRenderer, new LiteralText(renderText), this.width / 2, this.height / 2 - 40, 0xFFFFFF);
         if (this.isMicrosoft) {
-            drawCenteredTextWithShadow(p_230430_1_, this.textRenderer, new LiteralText("Check your browser").asOrderedText(), this.width / 2, this.height / 2 - 28, 0xFFFFFF);
+            drawCenteredText(p_230430_1_, this.textRenderer, new LiteralText("Check your browser"), this.width / 2, this.height / 2 - 28, 0xFFFFFF);
         }
         super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
     }

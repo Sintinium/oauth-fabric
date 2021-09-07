@@ -7,7 +7,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,11 +23,11 @@ public abstract class MultiplayerScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("TAIL"))
     protected void init(CallbackInfo ci) {
-        addDrawableChild(new ButtonWidget(10, 6, 66, 20, new LiteralText("Oauth Login"), button -> {
-            MinecraftClient.getInstance().setScreen(new LoginTypeScreen(this));
+        addButton(new ButtonWidget(10, 6, 66, 20, new LiteralText("Oauth Login"), button -> {
+            MinecraftClient.getInstance().openScreen(new LoginTypeScreen(this));
         }));
         final TextWidget textWidget = new TextWidget(10 + 66 + 3, 6, 0, 20, "Status: offline");
-        addDrawableChild(textWidget);
+        addButton(textWidget);
         textWidget.setColor(0xFF5555);
         Thread thread = new Thread(() -> {
             boolean isOnline = LoginUtil.isOnline();
