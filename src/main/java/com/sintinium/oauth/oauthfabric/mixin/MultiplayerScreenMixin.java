@@ -23,11 +23,11 @@ public abstract class MultiplayerScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("TAIL"))
     protected void init(CallbackInfo ci) {
-        addButton(new ButtonWidget(10, 6, 66, 20, new LiteralText("Oauth Login"), button -> {
-            MinecraftClient.getInstance().openScreen(new LoginTypeScreen(this));
+        addDrawableChild(new ButtonWidget(10, 6, 66, 20, new LiteralText("Oauth Login"), button -> {
+            MinecraftClient.getInstance().setScreen(new LoginTypeScreen(this));
         }));
         final TextWidget textWidget = new TextWidget(10 + 66 + 3, 6, 0, 20, "Status: offline");
-        addButton(textWidget);
+        addDrawableChild(textWidget);
         textWidget.setColor(0xFF5555);
         Thread thread = new Thread(() -> {
             boolean isOnline = LoginUtil.isOnline();

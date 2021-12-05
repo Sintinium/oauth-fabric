@@ -29,9 +29,9 @@ public class LoginLoadingScreen extends OAuthScreen {
 
     @Override
     protected void init() {
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
             onCancel.run();
-            MinecraftClient.getInstance().openScreen(lastScreen);
+            MinecraftClient.getInstance().setScreen(lastScreen);
         }));
     }
 

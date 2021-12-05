@@ -53,10 +53,10 @@ public class LoginScreen extends OAuthScreen {
         }
         this.usernameWidget.setChangedListener(this::onEdited);
 
-        this.addButton(this.usernameWidget);
-        this.addButton(this.passwordWidget);
+        this.addDrawableChild(this.usernameWidget);
+        this.addDrawableChild(this.passwordWidget);
 
-        this.mojangLoginButton = this.addButton(new ResponsiveButton(this.width / 2 - 100, this.height / 2 + 36, 200, 20, new LiteralText("Login"), (p_213030_1_) -> {
+        this.mojangLoginButton = this.addDrawableChild(new ResponsiveButton(this.width / 2 - 100, this.height / 2 + 36, 200, 20, new LiteralText("Login"), (p_213030_1_) -> {
             Thread thread = new Thread(() -> {
                 if (usernameWidget.getText().isEmpty()) {
                     toRun.add(() -> this.status.set("Missing username!"));
@@ -68,15 +68,15 @@ public class LoginScreen extends OAuthScreen {
                         toRun.add(() -> this.status.set("Wrong password or username!"));
                     } else {
                         LoginUtil.updateOnlineStatus();
-                        toRun.add(() -> MinecraftClient.getInstance().openScreen(multiplayerScreen));
+                        toRun.add(() -> MinecraftClient.getInstance().setScreen(multiplayerScreen));
                     }
                 }
             });
             thread.start();
         }, this::updateLoginButton, () -> this.mojangLoginButton.setMessage(new LiteralText("Login"))));
 
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
-            MinecraftClient.getInstance().openScreen(lastScreen);
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (p_213029_1_) -> {
+            MinecraftClient.getInstance().setScreen(lastScreen);
         }));
         this.cleanUp();
     }
@@ -108,7 +108,7 @@ public class LoginScreen extends OAuthScreen {
 
     public void onClose() {
         this.cleanUp();
-        this.client.openScreen(this.lastScreen);
+        this.client.setScreen(this.lastScreen);
     }
 
     private void cleanUp() {
@@ -125,11 +125,11 @@ public class LoginScreen extends OAuthScreen {
         }
 
         // Super render
-        for(int i = 0; i < this.buttons.size(); ++i) {
-            if (this.buttons.get(i) == this.passwordWidget) {
+        for(int i = 0; i < this.children().size(); ++i) {
+            if (this.children().get(i) == this.passwordWidget) {
                 continue;
             }
-            ((ClickableWidget)this.buttons.get(i)).render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+            ((ClickableWidget)this.children().get(i)).render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
         }
 
         String pw = this.passwordWidget.getText();

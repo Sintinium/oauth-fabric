@@ -21,27 +21,27 @@ public class LoginTypeScreen extends OAuthScreen {
 
     @Override
     protected void init() {
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 - 20 - 2, 200, 20, new LiteralText("Mojang Login"), button -> {
-            MinecraftClient.getInstance().openScreen(new LoginScreen(this, lastScreen));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 - 20 - 2, 200, 20, new LiteralText("Mojang Login"), button -> {
+            MinecraftClient.getInstance().setScreen(new LoginScreen(this, lastScreen));
         }));
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 2, 200, 20, new LiteralText("Microsoft Login"), (p_213031_1_) -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 2, 200, 20, new LiteralText("Microsoft Login"), (p_213031_1_) -> {
             final MicrosoftLogin login = new MicrosoftLogin();
             if (login.getErrorMsg() != null) {
                 System.err.println(login.getErrorMsg());
             }
             LoginLoadingScreen loginLoadingScreen = new LoginLoadingScreen(lastScreen, this, login::cancelLogin, true);
-            MinecraftClient.getInstance().openScreen(loginLoadingScreen);
+            MinecraftClient.getInstance().setScreen(loginLoadingScreen);
             Thread thread = new Thread(() -> {
                 login.login(() -> {
                     LoginUtil.updateOnlineStatus();
-                    loginLoadingScreen.addToQueue(() -> MinecraftClient.getInstance().openScreen(lastScreen));
+                    loginLoadingScreen.addToQueue(() -> MinecraftClient.getInstance().setScreen(lastScreen));
                 });
             });
             thread.start();
         }));
 
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (button) -> {
-            MinecraftClient.getInstance().openScreen(lastScreen);
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 2 + 60, 200, 20, ScreenTexts.CANCEL, (button) -> {
+            MinecraftClient.getInstance().setScreen(lastScreen);
         }));
     }
 

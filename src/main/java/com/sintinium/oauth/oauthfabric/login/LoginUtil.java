@@ -55,14 +55,14 @@ public class LoginUtil {
     }
 
     public static void loginMs(MicrosoftLogin.MinecraftProfile profile) {
-        Session session = new Session(profile.name, profile.id, profile.token.accessToken, Session.AccountType.MOJANG.name());
+        Session session = new Session(profile.name, profile.id, profile.token.accessToken, Optional.empty(), Optional.empty(), Session.AccountType.MSA);
         setSession(session);
     }
 
     public static Optional<Boolean> loginMojangOrLegacy(String username, String password) {
         try {
             if (password.isEmpty()) {
-                Session session = new Session(username, UUID.nameUUIDFromBytes(username.getBytes()).toString(), null, UserType.LEGACY.getName());
+                Session session = new Session(username, UUID.nameUUIDFromBytes(username.getBytes()).toString(), null, Optional.empty(), Optional.empty(), Session.AccountType.MSA);
                 setSession(session);
                 return Optional.of(true);
             }
@@ -76,7 +76,7 @@ public class LoginUtil {
             String type = userAuth.getUserType().getName();
             userAuth.logOut();
 
-            Session session = new Session(name, uuid, token, type);
+            Session session = new Session(name, uuid, token, Optional.empty(), Optional.empty(), Session.AccountType.byName(type));
             setSession(session);
             lastMojangUsername = username;
             return Optional.of(true);
