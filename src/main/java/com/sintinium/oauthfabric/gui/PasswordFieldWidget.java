@@ -1,10 +1,9 @@
-//package com.sintinium.oauth.oauthfabric.gui;
+//package com.sintinium.oauth.gui;
 //
 //import com.mojang.blaze3d.matrix.MatrixStack;
 //import com.mojang.blaze3d.platform.GlStateManager;
 //import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.Minecraft;
-//import net.minecraft.client.font.TextRenderer;
 //import net.minecraft.client.gui.AbstractGui;
 //import net.minecraft.client.gui.FontRenderer;
 //import net.minecraft.client.gui.IGuiEventListener;
@@ -15,7 +14,6 @@
 //import net.minecraft.client.renderer.BufferBuilder;
 //import net.minecraft.client.renderer.Tessellator;
 //import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-//import net.minecraft.text.Text;
 //import net.minecraft.util.IReorderingProcessor;
 //import net.minecraft.util.SharedConstants;
 //import net.minecraft.util.Util;
@@ -31,7 +29,7 @@
 //import java.util.function.Consumer;
 //import java.util.function.Predicate;
 //
-//public class PasswordFieldWidgetOld extends Widget implements IRenderable, IGuiEventListener {
+//public class PasswordFieldWidget extends Widget implements IRenderable, IGuiEventListener {
 //    private final FontRenderer font;
 //    private String value = "";
 //    private int maxLength = 32;
@@ -52,11 +50,11 @@
 //        return IReorderingProcessor.forward(p_195610_0_, Style.EMPTY);
 //    };
 //
-//    public PasswordFieldWidgetOld(TextRenderer p_i232260_1_, int p_i232260_2_, int p_i232260_3_, int p_i232260_4_, int p_i232260_5_, Text p_i232260_6_) {
+//    public PasswordFieldWidget(FontRenderer p_i232260_1_, int p_i232260_2_, int p_i232260_3_, int p_i232260_4_, int p_i232260_5_, ITextComponent p_i232260_6_) {
 //        this(p_i232260_1_, p_i232260_2_, p_i232260_3_, p_i232260_4_, p_i232260_5_, (TextFieldWidget) null, p_i232260_6_);
 //    }
 //
-//    public PasswordFieldWidgetOld(TextRenderer p_i232259_1_, int p_i232259_2_, int p_i232259_3_, int p_i232259_4_, int p_i232259_5_, TextFieldWidget p_i232259_6_, Text p_i232259_7_) {
+//    public PasswordFieldWidget(FontRenderer p_i232259_1_, int p_i232259_2_, int p_i232259_3_, int p_i232259_4_, int p_i232259_5_, @Nullable TextFieldWidget p_i232259_6_, ITextComponent p_i232259_7_) {
 //        super(p_i232259_2_, p_i232259_3_, p_i232259_4_, p_i232259_5_, p_i232259_7_);
 //        this.font = p_i232259_1_;
 //        if (p_i232259_6_ != null) {
@@ -64,6 +62,8 @@
 //        }
 //
 //    }
+//
+//    //region Unedited
 //
 //    public void setResponder(Consumer<String> p_212954_1_) {
 //        this.responder = p_212954_1_;
@@ -362,10 +362,11 @@
 //        super.setFocused(p_146195_1_);
 //    }
 //
+//    //endregion
+//
 //    private String getHiddenValue() {
 //        StringBuilder builder = new StringBuilder();
 //        for (int i = 0; i < value.length(); i++) {
-////            builder.append("\u2022");
 //            builder.append("*");
 //        }
 //        return builder.toString();
@@ -379,13 +380,15 @@
 //                fill(p_230431_1_, this.x, this.y, this.x + this.width, this.y + this.height, -16777216);
 //            }
 //
-//            p_230431_1_.pushPose();
-//            p_230431_1_.scale(1.5f, 1.5f, 1.5f);
-//            p_230431_1_.translate(0f, 0f, 0f);
 //            int i2 = this.isEditable ? this.textColor : this.textColorUneditable;
 //            int j = this.cursorPos - this.displayPos;
 //            int k = this.highlightPos - this.displayPos;
+//
+//            // Added
 //            String s = this.font.plainSubstrByWidth(this.getHiddenValue().substring(this.displayPos), this.getInnerWidth());
+////            String s = this.font.plainSubstrByWidth(this.value.substring(this.displayPos), this.getInnerWidth());
+//            // End
+//
 //            boolean flag = j >= 0 && j <= s.length();
 //            boolean flag1 = this.isFocused() && this.frame / 6 % 2 == 0 && flag;
 //            int l = this.bordered ? this.x + 4 : this.x;
@@ -395,8 +398,13 @@
 //                k = s.length();
 //            }
 //
+//            // Added
+//            p_230431_1_.pushPose();
+//            p_230431_1_.scale(1.5f, 1.5f, 1.5f);
+//            p_230431_1_.translate(0f, 0f, 0f);
 //            l /= 1.5;
 //            i1 /= 1.5;
+//            // End
 //
 //            if (!s.isEmpty()) {
 //                String s1 = flag ? s.substring(0, j) : s;
@@ -420,6 +428,7 @@
 //                this.font.drawShadow(p_230431_1_, this.suggestion, (float) (k1 - 1), (float) i1, -8355712);
 //            }
 //
+//            // Added
 //            p_230431_1_.popPose();
 //            l *= 1.5;
 //            i1 *= 1.5;
@@ -427,6 +436,8 @@
 //            if (s.isEmpty()) {
 //                k1 /= 1.5;
 //            }
+//            // End
+//
 //            if (flag1) {
 //                if (flag2) {
 //                    AbstractGui.fill(p_230431_1_, k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
@@ -435,16 +446,22 @@
 //                }
 //            }
 //
+//            // Added
 //            p_230431_1_.pushPose();
 //            p_230431_1_.scale(1.5f, 1.5f, 1.5f);
 //            l /= 1.5;
 //            i1 /= 1.5;
 //            k1 /= 1.5;
+//            // End
+//
 //            if (k != j) {
 //                int l1 = l + this.font.width(s.substring(0, k));
 //                this.renderHighlight(k1, i1 - 1, l1 - 1, i1 + 1 + 7);
 //            }
+//
+//            // Added
 //            p_230431_1_.popPose();
+//            // End
 //        }
 //    }
 //
@@ -472,7 +489,11 @@
 //        Tessellator tessellator = Tessellator.getInstance();
 //        BufferBuilder bufferbuilder = tessellator.getBuilder();
 //        RenderSystem.color4f(0.0F, 0.0F, 255.0F, 255.0F);
+//
+//        // Added
 //        RenderSystem.scalef(1.5f, 1.5f, 1.5f);
+//        // End
+//
 //        RenderSystem.disableTexture();
 //        RenderSystem.enableColorLogicOp();
 //        RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
@@ -482,10 +503,16 @@
 //        bufferbuilder.vertex((double) p_146188_3_, (double) p_146188_2_, 0.0D).endVertex();
 //        bufferbuilder.vertex((double) p_146188_1_, (double) p_146188_2_, 0.0D).endVertex();
 //        tessellator.end();
+//
+//        // Added
 //        RenderSystem.scalef(1f / 1.5f, 1f / 1.5f, 1f / 1.5f);
+//        // End
+//
 //        RenderSystem.disableColorLogicOp();
 //        RenderSystem.enableTexture();
 //    }
+//
+//    //region Unedited
 //
 //    private int getMaxLength() {
 //        return this.maxLength;
@@ -600,4 +627,6 @@
 //    public void setX(int p_212952_1_) {
 //        this.x = p_212952_1_;
 //    }
+//
+//    //endregion
 //}

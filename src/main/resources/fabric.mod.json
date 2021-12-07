@@ -13,7 +13,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.sintinium.oauth.oauthfabric.OauthFabric"
+      "com.sintinium.oauthfabric.OAuth"
     ]
   },
   "mixins": [

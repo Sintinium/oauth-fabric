@@ -1,13 +1,18 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.sintinium.oauth.oauthfabric.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "package": "com.sintinium.oauthfabric.mixin",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MinecraftClientMixin",
-    "MultiplayerScreenMixin"
   ],
   "client": [
+    "MinecraftClientMixin",
+    "EntityRendererManagerMixin",
+    "EntityRendererMixin",
+    "LivingRendererMixin",
+    "MultiplayerScreenMixin",
+    "PasswordBoxMixin",
+    "PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

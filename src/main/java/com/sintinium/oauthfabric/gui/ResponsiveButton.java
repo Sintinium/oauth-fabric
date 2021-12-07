@@ -1,16 +1,16 @@
-package com.sintinium.oauth.oauthfabric.gui;
+package com.sintinium.oauthfabric.gui;
 
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 public class ResponsiveButton extends ButtonWidget {
-    private Runnable onHover;
-    private Runnable onUnhover;
-    private boolean wasHovered = false;
+    private final Runnable onHover;
+    private final Runnable onUnhover;
+    private final boolean wasHovered = false;
 
-    public ResponsiveButton(int p_i232255_1_, int p_i232255_2_, int p_i232255_3_, int p_i232255_4_, Text p_i232255_5_, ButtonWidget.PressAction onPress, Runnable onHover, Runnable onUnhover) {
-        super(p_i232255_1_, p_i232255_2_, p_i232255_3_, p_i232255_4_, p_i232255_5_, onPress);
+    public ResponsiveButton(int x, int y, int width, int height, Text message, ButtonWidget.PressAction onPress, Runnable onHover, Runnable onUnhover) {
+        super(x, y, width, height, message, onPress);
         this.onHover = onHover;
         this.onUnhover = onUnhover;
     }
