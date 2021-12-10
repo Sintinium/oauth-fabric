@@ -90,11 +90,11 @@ public abstract class PasswordBoxMixin extends ClickableWidget {
             i = this.editable ? this.editableColor : this.uneditableColor;
             int j = this.selectionStart - this.firstCharacterIndex;
             int k = this.selectionEnd - this.firstCharacterIndex;
-            String string = this.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex), this.getInnerWidth());
+            String string = this.textRenderer.trimToWidth(getHiddenValue(this.text).substring(this.firstCharacterIndex), this.getInnerWidth());
             boolean bl = j >= 0 && j <= string.length();
             boolean bl2 = this.isFocused() && this.focusedTicks / 6 % 2 == 0 && bl;
             int l = this.drawsBackground ? this.x + 4 : this.x;
-            int m = this.drawsBackground ? this.y + (this.height - 8) / 2 : this.y;
+            int i1 = this.drawsBackground ? this.y + (this.height - 8) / 2 : this.y;
             int n = l;
             if (k > string.length()) {
                 k = string.length();
@@ -102,38 +102,41 @@ public abstract class PasswordBoxMixin extends ClickableWidget {
 
             if (!string.isEmpty()) {
                 String string2 = bl ? string.substring(0, j) : string;
-                n = this.textRenderer.drawWithShadow(matrices, (OrderedText)this.renderTextProvider.apply(string2, this.firstCharacterIndex), (float)l, (float)m, i);
+                n = this.textRenderer.drawWithShadow(matrices, (OrderedText)this.renderTextProvider.apply(string2, this.firstCharacterIndex), (float)l, (float)i1, i);
             }
 
             // Added
             matrices.push();
             matrices.scale(1.5f, 1.5f, 1.5f);
             l /= 1.5f;
-            m /= 1.5f;
+            i1 /= 1.5f;
             // End
 
             boolean string2 = this.selectionStart < this.text.length() || this.text.length() >= this.getMaxLength();
-            int o = n;
+            int k1 = n;
             if (!bl) {
-                o = j > 0 ? l + this.width : l;
+                k1 = j > 0 ? l + this.width : l;
             } else if (string2) {
-                o = n - 1;
+                k1 = n - 1;
                 --n;
             }
 
             if (!string.isEmpty() && bl && j < string.length()) {
-                this.textRenderer.drawWithShadow(matrices, (OrderedText)this.renderTextProvider.apply(string.substring(j), this.selectionStart), (float)n, (float)m, i);
+                this.textRenderer.drawWithShadow(matrices, (OrderedText)this.renderTextProvider.apply(string.substring(j), this.selectionStart), (float)n, (float)i1, i);
             }
 
             if (!string2 && this.suggestion != null) {
-                this.textRenderer.drawWithShadow(matrices, this.suggestion, (float)(o - 1), (float)m, -8355712);
+                this.textRenderer.drawWithShadow(matrices, this.suggestion, (float)(k1 - 1), (float)i1, -8355712);
             }
 
             // Added
             matrices.pop();
             l *= 1.5;
-            m *= 1.5;
-            o *= 1.5;
+            i1 *= 1.5;
+            k1 *= 1.5;
+            if (true) {
+                k1 /= 1.5;
+            }
             // End
 
             int var10002;
@@ -141,13 +144,13 @@ public abstract class PasswordBoxMixin extends ClickableWidget {
             int var10004;
             if (bl2) {
                 if (string2) {
-                    var10002 = m - 1;
-                    var10003 = o + 1;
-                    var10004 = m + 1;
+                    var10002 = i1 - 1;
+                    var10003 = k1 + 1;
+                    var10004 = i1 + 1;
                     Objects.requireNonNull(this.textRenderer);
-                    DrawableHelper.fill(matrices, o, var10002, var10003, var10004 + 9, -3092272);
+                    DrawableHelper.fill(matrices, k1, var10002, var10003, var10004 + 9, -3092272);
                 } else {
-                    this.textRenderer.drawWithShadow(matrices, "_", (float)o, (float)m, i);
+                    this.textRenderer.drawWithShadow(matrices, "_", (float)k1, (float)i1, i);
                 }
             }
 
@@ -155,17 +158,17 @@ public abstract class PasswordBoxMixin extends ClickableWidget {
             matrices.push();
             matrices.scale(1.5f, 1.5f, 1.5f);
             l /= 1.5;
-            m /= 1.5;
-            o /= 1.5;
+            i1 /= 1.5;
+            k1 /= 1.5;
             // End
 
             if (k != j) {
                 int p = l + this.textRenderer.getWidth(string.substring(0, k));
-                var10002 = m - 1;
+                var10002 = i1 - 1;
                 var10003 = p - 1;
-                var10004 = m + 1;
+                var10004 = i1 + 1;
                 Objects.requireNonNull(this.textRenderer);
-                this.drawSelectionHighlight(o, var10002, var10003, var10004 + 9);
+                this.drawSelectionHighlight(k1, var10002, var10003, var10004 + 9);
             }
 
             // Added

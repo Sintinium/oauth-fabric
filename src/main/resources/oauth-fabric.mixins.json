@@ -6,10 +6,10 @@
   "mixins": [
   ],
   "client": [
-    "MinecraftClientMixin",
     "EntityRendererManagerMixin",
     "EntityRendererMixin",
     "LivingRendererMixin",
+    "MinecraftClientMixin",
     "MultiplayerScreenMixin",
     "PasswordBoxMixin",
     "PlayerRendererMixin"

@@ -37,8 +37,8 @@ public class LoginScreen extends OAuthScreen {
         super.tick();
         this.usernameWidget.tick();
         this.passwordWidget.tick();
-        if (usernameWidget.isFocused()) passwordWidget.changeFocus(false);
-        if (passwordWidget.isFocused()) usernameWidget.changeFocus(false);
+        if (usernameWidget.isFocused()) passwordWidget.setTextFieldFocused(false);
+        if (passwordWidget.isFocused()) usernameWidget.setTextFieldFocused(false);
         if (!toRun.isEmpty()) {
             for (Runnable r : toRun) {
                 r.run();
