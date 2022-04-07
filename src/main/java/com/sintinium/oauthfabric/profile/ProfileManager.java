@@ -44,7 +44,7 @@ public class ProfileManager {
     public void loadProfiles() throws IOException {
         JsonArray array;
         try (InputStream stream = new FileInputStream(saveFile)) {
-            array = new JsonParser().parse(IOUtils.toString(stream, Charset.defaultCharset())).getAsJsonArray();
+            array = JsonParser.parseString(IOUtils.toString(stream, Charset.defaultCharset())).getAsJsonArray();
         } catch (Exception e) {
             e.printStackTrace();
             array = new JsonArray();
@@ -55,15 +55,9 @@ public class ProfileManager {
             IProfile profile = null;
             try {
                 switch (type) {
-                    case "mojang":
-                        profile = MojangProfile.deserialize(array.get(i).getAsJsonObject());
-                        break;
-                    case "microsoft":
-                        profile = MicrosoftProfile.deserialize(array.get(i).getAsJsonObject());
-                        break;
-                    case "offline":
-                        profile = OfflineProfile.deserialize(array.get(i).getAsJsonObject());
-                        break;
+                    case "mojang" -> profile = MojangProfile.deserialize(array.get(i).getAsJsonObject());
+                    case "microsoft" -> profile = MicrosoftProfile.deserialize(array.get(i).getAsJsonObject());
+                    case "offline" -> profile = OfflineProfile.deserialize(array.get(i).getAsJsonObject());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

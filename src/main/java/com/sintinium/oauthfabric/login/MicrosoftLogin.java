@@ -309,7 +309,7 @@ public class MicrosoftLogin {
     }
 
     private JsonObject parseObject(String str) {
-        return new JsonParser().parse(str).getAsJsonObject();
+        return JsonParser.parseString(str).getAsJsonObject();
     }
 
     private static class MsToken {
